@@ -1,6 +1,6 @@
-const accessToken = "";
-const account_id = "";
-const budget_id = "";
+const accessToken = ""; //YNAB access token
+const budget_id = "";// Main budget id
+const account_id = ""; // Bank for Daily Average Balance script
 
 
 module.exports = {

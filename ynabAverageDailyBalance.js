@@ -19,7 +19,7 @@ function formatYNAB(number) {
 	return formatMoney(number / 1000);
 }
 
-const accountCreationDate = moment("2023-01-03");
+const accountCreationDate = moment("2023-01-03"); //statement date for account
 
 var transactions;
 
@@ -40,7 +40,7 @@ var transactions;
 	transactions = transactionsResponse.data.transactions;
 
 	// ---------------------- determine days with transactions -------------------
-	var uniq_days = Array.from(
+	var uniqDays = Array.from(
 		new Set(
 			_.map(transactions, (tx) => {
 				return tx.date;
@@ -49,41 +49,41 @@ var transactions;
 	);
 
 	// console.log("\nDays with Transactions:");
-	// console.log(uniq_days);
+	// console.log(uniqDays);
 
 	const first_transaction_date = moment.min(
-		_.map(uniq_days, (day) => {
+		_.map(uniqDays, (day) => {
 			return moment(day);
 		})
 	);
-	const account_first_of_month = accountCreationDate.date();
+	const AccountFirstOfMonth = accountCreationDate.date();
 	console.log("\nAccount:");
 	console.log(thisAccount.name);
 	console.log("\nAccount Statement Date:");
 	console.log(accountCreationDate.format("Do"));
 
-	const the_abstract_now = moment();
+	const theAbstractNow = moment();
 	// ---------------------- are we before, on, or after statement date -------------------
 
-	if (the_abstract_now.date() > account_first_of_month) {
+	if (theAbstractNow.date() > AccountFirstOfMonth) {
 		// console.log("AFTER 3rd");
 		//filter transactions greater than the 3rd of current month.
-		uniq_days = _.filter(uniq_days, (day) => {
+		uniqDays = _.filter(uniqDays, (day) => {
 			return (
-				moment().date(account_first_of_month).dayOfYear() <=
+				moment().date(AccountFirstOfMonth).dayOfYear() <=
 				moment(day).dayOfYear()
 			);
 		});
 	}
-	if (the_abstract_now.date() <= account_first_of_month) {
+	if (theAbstractNow.date() <= AccountFirstOfMonth) {
 		// if(true){
 		// console.log("BEFORE 3rd");
 		//filter transactions greater than the 3rd of previous month.
 		const a_month_ago = moment()
 			.subtract(1, "months")
 			.startOf("date")
-			.date(account_first_of_month);
-		uniq_days = _.filter(uniq_days, (day) => {
+			.date(AccountFirstOfMonth);
+		uniqDays = _.filter(uniqDays, (day) => {
 			// console.log("previous_month")
 			// console.log(moment(day).diff(a_month_ago,'days') > 0)
 			return moment(day).diff(a_month_ago, "days") > 0;
@@ -91,7 +91,7 @@ var transactions;
 	}
 
 	const min_day = moment(
-		_.min(uniq_days, (day) => {
+		_.min(uniqDays, (day) => {
 			return moment(day);
 		})
 	);
@@ -102,7 +102,7 @@ var transactions;
 	console.log("\nDays into Current Cycle: ");
 	console.log(span);
 
-	const processed = _.map(uniq_days, (uniq_day, index) => {
+	const processed = _.map(uniqDays, (uniq_day, index) => {
 		//grab the transactions in current day
 		var daily_tx = _.filter(transactions, function (tx) {
 			return tx.date == uniq_day;
@@ -120,11 +120,11 @@ var transactions;
 			0
 		);
 		// 	calc the days between this tx and next
-		var days_between = moment(uniq_days[index + 1]).diff(
+		var days_between = moment(uniqDays[index + 1]).diff(
 			moment(uniq_day),
 			"days"
 		);
-		if (index + 1 == uniq_days.length) {
+		if (index + 1 == uniqDays.length) {
 			//
 			days_between = moment().diff(moment(uniq_day), "days") + 1;
 		}
@@ -163,7 +163,7 @@ var transactions;
 	// ---------------------- balance projection -------------------
 	var sum_balances_projection_last_row = _.last(sum_balances);
 	var days_left_in_period = moment()
-		.date(account_first_of_month)
+		.date(AccountFirstOfMonth)
 		.add(1, "month")
 		.diff(moment(), "days");
 	sum_balances_projection_last_row[2] = days_left_in_period;
