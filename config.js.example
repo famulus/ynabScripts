@@ -1,0 +1,10 @@
+const accessToken = "";
+const account_id = "";
+const budget_id = "";
+
+
+module.exports = {
+   accessToken,
+   account_id,
+   budget_id
+}
