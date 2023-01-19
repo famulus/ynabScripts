@@ -162,14 +162,28 @@ var transactions;
 
 	// ---------------------- balance projection -------------------
 	var sum_balances_projection_last_row = _.last(sum_balances);
-	var days_left_in_period = moment()
+	const daysInStatementPeriod = moment() 
+		.date(AccountFirstOfMonth).daysInMonth()-1;
+
+	var days_left_in_period = moment() 
 		.date(AccountFirstOfMonth)
-		.add(1, "month")
-		.diff(moment(), "days");
+		.add(1,'month')
+		.subtract(1, 'day')
+		.diff(moment(sum_balances_projection_last_row[0]), 'days')
+		 
+
+
+	// var days_left_in_period = moment() //span from last transaction to end of statment
+	// 	.date(AccountFirstOfMonth)
+	// 	.add(1, "month")
+	// 	.subtract(1,'days')
+	// 	.diff(moment(), "days");
+
 	sum_balances_projection_last_row[2] = days_left_in_period;
 	sum_balances_projection_last_row[4] =
 		days_left_in_period * sum_balances_projection_last_row[3];
 
+		//update the last row so number of days extends to end of statement period
 	var sum_balances_projection = sum_balances;
 	sum_balances_projection[sum_balances.length - 1] =
 		sum_balances_projection_last_row;
@@ -182,7 +196,7 @@ var transactions;
 		0
 	);
 	const average_daily_balance_projection =
-		sum_avb_projection /
+		sum_avb_projection / 
 		_.reduce(
 			sum_balances_projection,
 			(memo, day) => {
@@ -192,6 +206,17 @@ var transactions;
 		);
 
 	// ---------------------- results -------------------
+	console.log(
+		"\n\ndaysInStatementPeriod:"
+	);
+	console.log(daysInStatementPeriod);
+	console.log(
+		"\n\ndays left in period:"
+	);
+	console.log(days_left_in_period);
+	// console.log(sum_balances_projection_last_row);
+	// console.log(sum_balances_projection);//array
+	// console.log(sum_avb_projection);
 	console.log(
 		"\n\nProjected Average Daily Balance (Assuming no further transactions):"
 	);
