@@ -163,12 +163,12 @@ var transactions;
 	// ---------------------- balance projection -------------------
 	var sum_balances_projection_last_row = _.last(sum_balances);
 	const daysInStatementPeriod = moment() 
-		.date(AccountFirstOfMonth).daysInMonth()-1;
+		.date(AccountFirstOfMonth).daysInMonth();
 
 	var days_left_in_period = moment() 
 		.date(AccountFirstOfMonth)
 		.add(1,'month')
-		.subtract(1, 'day')
+		.subtract(1,'days')
 		.diff(moment(sum_balances_projection_last_row[0]), 'days')
 		 
 
@@ -211,11 +211,11 @@ var transactions;
 	);
 	console.log(daysInStatementPeriod);
 	console.log(
-		"\n\ndays left in period:"
+		"\n\ndays from last transaction to end of Statement:"
 	);
 	console.log(days_left_in_period);
 	// console.log(sum_balances_projection_last_row);
-	// console.log(sum_balances_projection);//array
+	console.log(sum_balances_projection);//array
 	// console.log(sum_avb_projection);
 	console.log(
 		"\n\nProjected Average Daily Balance (Assuming no further transactions):"
